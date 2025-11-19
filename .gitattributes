@@ -1,0 +1,39 @@
+# Force LF line endings for all text files
+* text=auto eol=lf
+
+# Treat these as text
+*.js text
+*.jsx text
+*.ts text
+*.tsx text
+*.json text
+*.md text
+*.yml text
+*.yaml text
+*.css text
+*.html text
+
+# Prevent CRLF issues inside patches
+*.patch -text
+
+# Ignore binary files to avoid corruption
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.svg binary
+*.ico binary
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary
+*.aac binary
+*.mp3 binary
+*.mp4 binary
+*.mov binary
+*.zip binary
+*.keystore binary
+
+# Expo specific
+android/** binary
+ios/** binary
