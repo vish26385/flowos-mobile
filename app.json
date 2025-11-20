@@ -12,18 +12,15 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "platforms": [
-      "android",
-      "ios",
-      "web"
-    ],
+    "assetBundlePatterns": ["**/*"],
+    "platforms": ["android", "ios", "web"],
+
     "experiments": {
       "typedRoutes": true
     },
+
     "plugins": [
+      "expo-system-ui",
       "expo-secure-store",
       "expo-router",
       [
@@ -32,20 +29,39 @@
           "icon": "./assets/icon.png",
           "color": "#7b61ff"
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "kotlinVersion": "1.9.24",
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "minSdkVersion": 23,
+            "enableProguardInReleaseBuilds": false,
+            "packagingOptions": {
+              "pickFirst": ["**/libc++_shared.so"]
+            }
+          }
+        }
       ]
     ],
+
     "web": {
       "bundler": "metro",
       "output": "single"
     },
+
+    "android": {
+      "package": "com.anonymous.flowosmobile"
+    },
+
     "extra": {
       "eas": {
         "projectId": "ef4d4f42-fbb8-4084-b256-fb6fd8077519"
       },
-      "API_URL": "https://flowosapi-f5gxcvgkenfpezaa.canadacentral-01.azurewebsites.net/api"
-    },
-    "android": {
-      "package": "com.anonymous.flowosmobile"
+      "API_URL":
+        "https://flowosapi-f5gxcvgkenfpezaa.canadacentral-01.azurewebsites.net/api"
     }
   }
 }
