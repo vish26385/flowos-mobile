@@ -38,12 +38,18 @@
           "android": {
             "kotlinVersion": "2.0.21",
             "compileSdkVersion": 35,
-            "targetSdkVersion": 34,
+            "targetSdkVersion": 35,
             "minSdkVersion": 24,
-            "enableProguardInReleaseBuilds": false,
+
             "packagingOptions": {
               "pickFirst": ["**/libc++_shared.so"]
-            }
+            },
+
+            "enableProguardInReleaseBuilds": false,
+
+            "newArchEnabled": false,
+            "useLegacyPackaging": true,
+            "hermesEnabled": false
           }
         }
       ]

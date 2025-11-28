@@ -1,0 +1,78 @@
+export default {
+  expo: {
+    name: "FlowOS",
+    slug: "flowos-mobile",
+    scheme: "flowos",
+    version: "1.0.0",
+    orientation: "portrait",
+
+    icon: "./assets/icon.png",
+    userInterfaceStyle: "automatic",
+
+    splash: {
+      image: "./assets/splash.png",
+      resizeMode: "contain",
+      backgroundColor: "#ffffff",
+    },
+
+    assetBundlePatterns: ["**/*"],
+    platforms: ["android", "ios", "web"],
+
+    experiments: {
+      typedRoutes: true,
+    },
+
+    plugins: [
+      "expo-system-ui",
+      "expo-secure-store",
+      "expo-router",
+
+      [
+        "expo-notifications",
+        {
+          icon: "./assets/icon.png",
+          color: "#7b61ff",
+        },
+      ],
+
+      [
+        "expo-build-properties",
+        {
+          android: {
+            kotlinVersion: "1.9.23",       // ✅ Correct version for Expo SDK 54
+            compileSdkVersion: 35,
+            targetSdkVersion: 35,
+            minSdkVersion: 24,
+
+            newArchEnabled: false,
+            hermesEnabled: false,
+
+            enableProguardInReleaseBuilds: false,
+            enableMinifyInReleaseBuilds: false,
+
+            packagingOptions: {
+              pickFirst: ["**/libc++_shared.so"],
+            },
+          },
+        },
+      ],
+    ],
+
+    android: {
+      package: "com.anonymous.flowosmobile",
+    },
+
+    web: {
+      bundler: "metro",
+      output: "single",
+    },
+
+    extra: {
+      eas: {
+        projectId: "ef4d4f42-fbb8-4084-b256-fb6fd8077519",
+      },
+      API_URL:
+        "https://flowosapi-f5gxcvgkenfpezaa.canadacentral-01.azurewebsites.net/api",
+    },
+  },
+};
