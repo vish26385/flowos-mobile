@@ -35,27 +35,47 @@ export default {
         },
       ],
 
+      // [
+      //   "expo-build-properties",
+      //   {
+      //     android: {
+      //       kotlinVersion: "1.9.23",       // ✅ Correct version for Expo SDK 54
+      //       compileSdkVersion: 35,
+      //       targetSdkVersion: 35,
+      //       minSdkVersion: 24,
+
+      //       newArchEnabled: false,
+      //       hermesEnabled: false,
+
+      //       enableProguardInReleaseBuilds: false,
+      //       enableMinifyInReleaseBuilds: false,
+
+      //       packagingOptions: {
+      //         pickFirst: ["**/libc++_shared.so"],
+      //       },
+      //     },
+      //   },
+      // ],
+
       [
-        "expo-build-properties",
-        {
-          android: {
-            kotlinVersion: "1.9.23",       // ✅ Correct version for Expo SDK 54
-            compileSdkVersion: 35,
-            targetSdkVersion: 35,
-            minSdkVersion: 24,
+  "expo-build-properties",
+  {
+    android: {
+      kotlinVersion: "2.0.21",
+      compileSdkVersion: 35,
+      targetSdkVersion: 35,
+      minSdkVersion: 24,
+      newArchEnabled: false,
+      hermesEnabled: false,
+      enableProguardInReleaseBuilds: false,
+      enableMinifyInReleaseBuilds: false,
+      packagingOptions: {
+        pickFirst: ["**/libc++_shared.so"]
+      }
+    }
+  }
+],
 
-            newArchEnabled: false,
-            hermesEnabled: false,
-
-            enableProguardInReleaseBuilds: false,
-            enableMinifyInReleaseBuilds: false,
-
-            packagingOptions: {
-              pickFirst: ["**/libc++_shared.so"],
-            },
-          },
-        },
-      ],
     ],
 
     android: {
