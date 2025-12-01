@@ -11,9 +11,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# android/ios native
-/android
-/ios
+# android/ios build outputs
+/android/app/build/
+/android/app/build.gradle.kts
+/android/.gradle
+/android/.idea
+/android/local.properties
 
 # env
 .env
