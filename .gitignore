@@ -12,11 +12,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # android/ios build outputs
-/android/app/build/
-/android/app/build.gradle.kts
-/android/.gradle
-/android/.idea
-/android/local.properties
+/android
+/ios
 
 # env
 .env
