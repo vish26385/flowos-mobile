@@ -6,13 +6,43 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "cache": {
+        "disabled": true
+      },
+      "env": {
+        "EXPO_NO_CACHE": "true",
+        "EAS_NO_CACHE": "true",
+        "CI": "true",
+        "NOYARNLOCK": "true"
+      }
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "cache": {
+        "disabled": true
+      },
+      "env": {
+        "EXPO_NO_CACHE": "true",
+        "EAS_NO_CACHE": "true",
+        "CI": "true",
+        "NOYARNLOCK": "true"
+      }
     },
     "production": {
-      "autoIncrement": true
+      "autoIncrement": true,
+      "android": {
+        "gradleCommand": ":app:bundleRelease"
+      },
+      "cache": {
+        "disabled": true
+      },
+      "env": {
+        "EXPO_NO_CACHE": "true",
+        "EAS_NO_CACHE": "true",
+        "CI": "true",
+        "NOYARNLOCK": "true"
+      }
     }
   },
   "submit": {
