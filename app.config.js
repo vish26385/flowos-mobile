@@ -1,70 +1,68 @@
 export default {
-  expo: {
-    name: "FlowOS",
-    slug: "flowos-mobile",
-    scheme: "flowos",
-    version: "1.0.0",
-    orientation: "portrait",
+  name: "FlowOS",
+  slug: "flowos-mobile",
+  scheme: "flowos",
+  version: "1.0.0",
+  orientation: "portrait",
 
-    icon: "./assets/icon.png",
-    userInterfaceStyle: "automatic",
+  icon: "./assets/icon.png",
+  userInterfaceStyle: "automatic",
 
-    splash: {
-      image: "./assets/splash.png",
-      resizeMode: "contain",
-      backgroundColor: "#ffffff",
-    },
+  splash: {
+    image: "./assets/splash.png",
+    resizeMode: "contain",
+    backgroundColor: "#ffffff",
+  },
 
-    assetBundlePatterns: ["**/*"],
-    platforms: ["android", "ios", "web"],
+  assetBundlePatterns: ["**/*"],
+  platforms: ["android", "ios", "web"],
 
-    experiments: {
-      typedRoutes: true,
-    },
+  experiments: {
+    typedRoutes: true,
+  },
 
-    plugins: [
-      "expo-system-ui",
-      "expo-secure-store",
-      "expo-router",
+  plugins: [
+    "expo-system-ui",
+    "expo-secure-store",
+    "expo-router",
 
-      [
-        "expo-notifications",
-        {
-          icon: "./assets/icon.png",
-          color: "#7b61ff",
-        },
-      ],
-
-       [
-        "expo-build-properties",
-        {
-          android: {
-            kotlinVersion: "2.0.21",
-            compileSdkVersion: 35,
-            targetSdkVersion: 35,
-            minSdkVersion: 24,
-            newArchEnabled: false,
-            hermesEnabled: false
-          },
-        }
-      ]
+    [
+      "expo-notifications",
+      {
+        icon: "./assets/icon.png",
+        color: "#7b61ff",
+      },
     ],
 
-    android: {
-      package: "com.anonymous.flowosmobile",
-    },
+    [
+      "expo-build-properties",
+      {
+        android: {
+          kotlinVersion: "2.0.21",
+          compileSdkVersion: 35,
+          targetSdkVersion: 35,
+          minSdkVersion: 24,
+          newArchEnabled: false,
+          hermesEnabled: false
+        },
+      }
+    ]
+  ],
 
-    web: {
-      bundler: "metro",
-      output: "single",
-    },
+  android: {
+    package: "com.anonymous.flowosmobile",
+  },
 
-    extra: {
-      eas: {
-        projectId: "ef4d4f42-fbb8-4084-b256-fb6fd8077519",
-      },
-      API_URL:
-        "https://flowosapi-f5gxcvgkenfpezaa.canadacentral-01.azurewebsites.net/api",
+  web: {
+    bundler: "metro",
+    output: "single",
+  },
+
+  extra: {
+    eas: {
+      projectId: "ef4d4f42-fbb8-4084-b256-fb6fd8077519",
     },
+    API_URL:
+      "https://flowosapi-f5gxcvgkenfpezaa.canadacentral-01.azurewebsites.net/api",
   },
 };
