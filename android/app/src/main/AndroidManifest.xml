@@ -29,7 +29,6 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="flowos"/>
-        <data android:scheme="com.anonymous.flowosmobile"/>
         <data android:scheme="exp+flowos-mobile"/>
       </intent-filter>
     </activity>
