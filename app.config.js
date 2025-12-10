@@ -46,9 +46,6 @@ export default {
             newArchEnabled: false,
             hermesEnabled: false
           },
-          reactNativeGradlePlugin: {
-            enableBundleCompression: false,
-          }
         }
       ]
     ],
