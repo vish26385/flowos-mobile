@@ -44,7 +44,10 @@ export default {
             targetSdkVersion: 35,
             minSdkVersion: 24,
             newArchEnabled: false,
-            hermesEnabled: false,
+            hermesEnabled: false
+          },
+          reactNativeGradlePlugin: {
+            enableBundleCompression: false,
           }
         }
       ]
