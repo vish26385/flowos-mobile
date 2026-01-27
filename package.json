@@ -10,7 +10,8 @@
     "web": "expo start --web",
     "lint": "eslint . --ext .ts,.tsx",
     "typecheck": "tsc --noEmit",
-    "prebuild": "expo prebuild"
+    "prebuild": "expo prebuild",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "2.2.0",
@@ -62,6 +63,7 @@
     "babel-plugin-module-resolver": "^5.0.2",
     "eslint": "^9.9.0",
     "metro": "^0.82.5",
+    "patch-package": "^8.0.1",
     "typescript": "~5.9.2"
   }
 }
