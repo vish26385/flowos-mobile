@@ -320,7 +320,7 @@ import {
 } from "react-native-paper";
 import { LineChart } from "react-native-chart-kit";
 import { useQuery } from "@tanstack/react-query";
-import * as FileSystem from "expo-file-system/legacy";
+import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";
 import { api } from "@/services/api";
 import { useAuth } from "@/context/AuthContext";
