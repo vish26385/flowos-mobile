@@ -35,3 +35,13 @@ allprojects {
 
 apply plugin: "expo-root-project"
 apply plugin: "com.facebook.react.rootproject"
+
+
+// --- disable-kotlin-werror ---
+subprojects { subproject ->
+  subproject.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+      allWarningsAsErrors = false
+    }
+  }
+}

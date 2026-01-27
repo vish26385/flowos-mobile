@@ -25,7 +25,7 @@ export default {
     "expo-system-ui",
     "expo-secure-store",
     "expo-router",
-
+    "./plugins/disableKotlinWerror",
     [
       "expo-notifications",
       {
