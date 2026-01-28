@@ -61,7 +61,7 @@ export default {
     eas: {
       projectId: "ef4d4f42-fbb8-4084-b256-fb6fd8077519",
     },
-    API_URL:
-      "https://flowosapi-f5gxcvgkenfpezaa.canadacentral-01.azurewebsites.net/api",
+    API_URL:      
+      "https://flowos-backend.onrender.com/api",
   },
 };
