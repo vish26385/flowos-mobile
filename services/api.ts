@@ -1,15 +1,20 @@
 import axios, { AxiosError } from "axios";
 import { getItem, setItem, deleteItem } from "@/services/secureStore";
 import { RefreshResponse } from "@/types/auth";
+import Constants from "expo-constants";
 
 // const API_BASE_URL =
 //   process.env.EXPO_PUBLIC_API_URL ??
 //   "https://flowosapi-f5gxcvgkenfpezaa.canadacentral-01.azurewebsites.net/api";
 
+// const API_BASE_URL =
+//   process.env.EXPO_PUBLIC_API_URL ??
+//   "http://10.221.248.65:44347/api";
+//   //"https://10.138.107.236:44348/api";
+
 const API_BASE_URL =
-  process.env.EXPO_PUBLIC_API_URL ??
-  "http://10.221.248.65:44347/api";
-  //"https://10.138.107.236:44348/api";
+  (Constants.expoConfig?.extra?.API_URL as string) ??
+  "https://flowos-backend.onrender.com/api";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
