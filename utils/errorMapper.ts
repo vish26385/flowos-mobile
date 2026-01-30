@@ -3,8 +3,8 @@ export function mapApiError(err: any): string {
   const status = err?.response?.status;
 
   // ✅ Network & server
-  if (!err.response) return "Unable to connect. Check your internet connection.";
-  if (status >= 500) return "Server is temporarily unavailable. Please try again later.";
+  if (!err.response) return "Server waking up… please try again.";
+  if (status >= 500) return "Something went wrong on our side. Please try again in a moment.";
 
   // ✅ Login and Register errors
   if (msg.includes("invalid credentials") || msg.includes("incorrect"))

@@ -55,7 +55,7 @@ type Task = {
 export default function DailyPlan() {
   const theme = useTheme();
   const { token, loading } = useAuth(); // ✅ read auth state
-
+  const { logout } = useAuth();
   const today = useMemo(() => dayjs().startOf("day"), []);
   const todayStr = useMemo(() => today.format("YYYY-MM-DD"), [today]);
 
@@ -66,12 +66,27 @@ export default function DailyPlan() {
 
   const { data } = useQuery({
     queryKey: ["tasks", "today", todayStr], // ✅ include the date for cache correctness
-    queryFn: async () =>
-      (await api.get("/tasks?due=" + todayStr)).data as Task[],
+    // queryFn: async () =>
+    //   (await api.get("/tasks?due=" + todayStr)).data as Task[],
+    queryFn: async () => {
+      try {
+        const res = await api.get(`/tasks?due=${todayStr}`);
+        console.log("✅ DailyPlan SUCCESS:", res.status);
+        return res.data as Task[];
+      } catch (err: any) {
+        if (err?.response?.status === 401) {
+          await logout();
+          return []; // or throw err; but usually return empty after logout
+        }
+        console.log("❌ DailyPlan error:", {
+          msg: err?.message,
+          status: err?.response?.status,
+          url: (err?.config?.baseURL || "") + (err?.config?.url || ""),          
+        });
+        throw err;
+      }
+    },
     enabled: !!token, // ✅ only fetch when authenticated
-    // optional niceties:
-    // staleTime: 60_000,
-    // refetchOnWindowFocus: false,
   });
 
   const backgroundColor =

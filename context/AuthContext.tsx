@@ -73,8 +73,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await setItem("accessToken", accessToken);
       await setItem("refreshToken", refreshToken);
       setToken(accessToken);
-
-      await registerPushToken();
       
       const decoded = jwtDecode<DecodedToken>(accessToken);
       setUser({
@@ -89,15 +87,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
 
       router.replace("/(tabs)");
+
+      //await registerPushToken();
+      registerPushToken().catch(err => {
+        console.log("Push token registration failed (ignored):", err?.message);
+      });      
   };
 
-  // 🔹 Logout
+  // // 🔹 Logout
+  // const logout = async () => {
+  //   await deleteItem("accessToken");
+  //   await deleteItem("refreshToken");
+  //   setToken(null);
+  //   setUser(null);
+  //   router.replace("/login");
+  // };
+
   const logout = async () => {
-    await deleteItem("accessToken");
-    await deleteItem("refreshToken");
-    setToken(null);
-    setUser(null);
-    router.replace("/login");
+    try {
+      await deleteItem("accessToken");
+      await deleteItem("refreshToken");
+    } finally {
+      setToken(null);
+      setUser(null);
+      router.replace("/login"); // adjust if needed
+    }
   };
 
   // 🆕 🔹 Register (final production version)
