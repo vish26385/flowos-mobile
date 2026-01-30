@@ -113,6 +113,14 @@ export default function RootLayout() {
 
   // ✅ Preload MaterialCommunityIcons once for all Paper inputs
   useEffect(() => {
+
+    if (Platform.OS === "android") {
+      Notifications.setNotificationChannelAsync("default", {
+        name: "Default",
+        importance: Notifications.AndroidImportance.MAX,
+      });
+    }
+
     loadAsync(MaterialCommunityIcons.font);
     async function loadFonts() {
       await Font.loadAsync(Ionicons.font); // 👈 preload Ionicons
