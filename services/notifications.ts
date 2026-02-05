@@ -52,6 +52,7 @@ export async function registerPushToken() {
 
     console.log("[PUSH] backend register-device OK:", res.status, res.data);
   } catch (err: any) {
+    console.log("[PUSH] build:", Constants.expoConfig?.version, Constants.expoConfig?.android?.versionCode);
     console.log("[PUSH] registerPushToken FAILED:", {
       msg: err?.message,
       status: err?.response?.status,

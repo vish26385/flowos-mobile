@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "743221001635",
+    "project_id": "flowos-e8f0c",
+    "storage_bucket": "flowos-e8f0c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:743221001635:android:5e5b42aa28060d119dee16",
+        "android_client_info": {
+          "package_name": "com.anonymous.flowosmobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWZrChbpUDz7feD8XoBm5OeU3FPUdLCXc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
