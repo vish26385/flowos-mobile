@@ -103,9 +103,9 @@ android {
             keyPassword 'android'
         }
         release {
-            storeFile file(FLOWOS_UPLOAD_STORE_FILE)
+            storeFile file(project.findProperty("FLOWOS_UPLOAD_STORE_FILE"))
             storePassword project.findProperty("FLOWOS_UPLOAD_STORE_PASSWORD")
-            keyAlias FLOWOS_UPLOAD_KEY_ALIAS
+            keyAlias project.findProperty("FLOWOS_UPLOAD_KEY_ALIAS")
             keyPassword project.findProperty("FLOWOS_UPLOAD_KEY_PASSWORD")
         }
     }
