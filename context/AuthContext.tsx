@@ -75,23 +75,47 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setToken(accessToken);
       
       const decoded = jwtDecode<DecodedToken>(accessToken);
+      // setUser({
+      //         id: decoded.id,
+      //         email: decoded.email,
+      //         name: decoded.name ?? decoded.email,
+      //         roles: decoded.role
+      //         ? Array.isArray(decoded.role)
+      //           ? decoded.role
+      //           : [decoded.role]          // force into array
+      //         : []
+      //       });
+
+      const roleValue =
+      (decoded as any).role ??
+      (decoded as any)["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+
+      const roles =
+      roleValue ? (Array.isArray(roleValue) ? roleValue : [roleValue]) : [];
+
       setUser({
         id: decoded.id,
-        email: decoded.email,
-        name: decoded.name ?? decoded.email,
-        roles: decoded.role
-        ? Array.isArray(decoded.role)
-          ? decoded.role
-          : [decoded.role]          // force into array
-        : []
+        email: (decoded as any).email ?? (decoded as any)["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"],
+        name:
+          (decoded as any).name ??
+          (decoded as any)["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"] ??
+          (decoded as any).email,
+        roles,
       });
 
       router.replace("/(tabs)");
 
-      //await registerPushToken();
-      registerPushToken().catch(err => {
-        console.log("Push token registration failed (ignored):", err?.message);
-      });      
+      // //await registerPushToken();
+      // registerPushToken().catch(err => {
+      //   console.log("Push token registration failed (ignored):", err?.message);
+      // });      
+
+      // ✅ run in background AFTER navigation to avoid blocking login UI
+      setTimeout(() => {
+        registerPushToken().catch((err) => {
+          console.log("Push token registration failed (ignored):", err?.message);
+        });
+      }, 0);
   };
 
   // // 🔹 Logout
@@ -117,32 +141,64 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // 🆕 🔹 Register (final production version)
   const register = async (fullName: string, email: string, password: string) => {
    
-      // 1️⃣ Strongly-typed payload
-      const payload: RegisterRequest = { fullName, email, password };
+          // 1️⃣ Strongly-typed payload
+          const payload: RegisterRequest = { fullName, email, password };
 
-      // 2️⃣ Call backend and infer response via generic type
-      const res = await api.post<RegisterResponse>("/auth/register", payload);
-      const { token: accessToken, refreshToken } = res.data;
-      if (!accessToken) throw new Error("No token returned");
+          try {
+          // 2️⃣ Call backend and infer response via generic type
+          const res = await api.post<RegisterResponse>("/auth/register", payload);
 
-      // 3️⃣ Store securely (reuse your same helper as login) and Update in-memory token 
-      await setItem("accessToken", accessToken);
-      await setItem("refreshToken", refreshToken);
-      setToken(accessToken);
+          const { token: accessToken, refreshToken } = res.data;
+          if (!accessToken) throw new Error("No token returned");
 
-      // 4️⃣ Decode JWT to populate user state
-      const decoded = jwtDecode<DecodedToken>(accessToken);
-      setUser({
-        id: decoded.id,
-        email: decoded.email,
-        name: decoded.name ?? decoded.email,
-        roles: decoded.role
-        ? Array.isArray(decoded.role)
-          ? decoded.role
-          : [decoded.role]          // force into array
-        : []
-      });
+          // 3️⃣ Store securely (reuse your same helper as login) and Update in-memory token 
+          await setItem("accessToken", accessToken);
+          await setItem("refreshToken", refreshToken);
+          setToken(accessToken);
 
+          // // 4️⃣ Decode JWT to populate user state
+          // const decoded = jwtDecode<DecodedToken>(accessToken);
+          // setUser({
+          //   id: decoded.id,
+          //   email: decoded.email,
+          //   name: decoded.name ?? decoded.email,
+          //   roles: decoded.role
+          //   ? Array.isArray(decoded.role)
+          //     ? decoded.role
+          //     : [decoded.role]          // force into array
+          //   : []
+          // });    
+
+          const decoded = jwtDecode<DecodedToken>(accessToken);
+
+          const roleValue =
+            (decoded as any).role ??
+            (decoded as any)["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+
+          const roles = roleValue ? (Array.isArray(roleValue) ? roleValue : [roleValue]) : [];
+
+          const emailValue =
+            (decoded as any).email ??
+            (decoded as any)["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"];
+
+          const nameValue =
+            (decoded as any).name ??
+            (decoded as any)["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"] ??
+            emailValue;
+
+          setUser({
+            id: (decoded as any).id ?? (decoded as any).sub,
+            email: emailValue,
+            name: nameValue,
+            roles,
+          });
+
+      } catch (err: any) {
+        console.log("[REGISTER] status:", err?.response?.status);
+        console.log("[REGISTER] data:", err?.response?.data);
+        console.log("[REGISTER] msg:", err?.message);
+        throw err;
+      }
       // 5️⃣ navigate    
       router.replace("/(tabs)");
   };
