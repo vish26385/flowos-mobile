@@ -124,7 +124,7 @@ export default {
   android: {
     package: "com.anonymous.flowosmobile",
     googleServicesFile: "./google-services.json", // ✅ REQUIRED for Firebase/FCM
-    versionCode: 63, // ✅ add this (choose a number)
+    versionCode: 75, // ✅ add this (choose a number)
   },
 
   web: {
