@@ -929,8 +929,10 @@ export default function EditTask() {
           setTask(fetched);
           setTitle(fetched.title);
           setDescription(fetched.description || "");
-          const d = dayjs(fetched.dueDate).toDate();
+          const d = new Date(fetched.dueDate); // ISO string -> Date (UTC parsed properly)
           setDueDate(d);
+          //const d = dayjs(fetched.dueDate).toDate();
+          //setDueDate(d);
 
           const p = (fetched.priority as Priority) ?? 2;
           setPriority(p);

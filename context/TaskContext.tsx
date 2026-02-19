@@ -231,45 +231,87 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
     },
   });
 
-// ✅ Delete Task  (FIX: return void, use "variables" for deletedId)
-const deleteMutation = useMutation({
-  mutationFn: async (id: number) => {
-    await api.delete(`/tasks/${id}`);
-    // ✅ DO NOT return id
-  },
+  const IST_OFFSET_MINUTES = 330;
 
-  // onSuccess(data, variables) => variables is the id you passed
-  onSuccess: async (_data, deletedId) => {
-    // 1) Invalidate the global list (your context list)
-    qc.invalidateQueries({ queryKey: ["tasks"], exact: false });
+  // ✅ Delete Task (FIXED for UTC stored dueDate + IST query keys)
+  const deleteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      await api.delete(`/tasks/${id}`);
+    },
 
-    // 2) Find deleted task's dueDate from cached list (so we know which day plan belongs to)
-    const cachedTasks = (qc.getQueryData<Task[]>(["tasks"]) ?? tasks) || [];
-    const deletedTask = cachedTasks.find((t) => t.id === deletedId);
+    onSuccess: async (_data, deletedId) => {
+      // ✅ 1) Find the deleted task FIRST (before invalidating tasks cache)
+      const cachedGlobalTasks = qc.getQueryData<Task[]>(["tasks"]) ?? tasks ?? [];
+      const deletedTask = cachedGlobalTasks.find((t) => t.id === deletedId);
 
-    // If we can't find it, fall back to invalidating all plan caches
-    if (!deletedTask?.dueDate) {
-      qc.invalidateQueries({ queryKey: ["plan"], exact: false });
-      return;
-    }
+      // ✅ 2) Always invalidate tasks lists (global + any derived)
+      qc.invalidateQueries({ queryKey: ["tasks"], exact: false });
 
-    const planDateStr = dayjs(deletedTask.dueDate)
-      .startOf("day")
-      .format("YYYY-MM-DD");
+      // ✅ 3) If we can't find dueDate, fallback: clear ALL plans
+      if (!deletedTask?.dueDate) {
+        qc.invalidateQueries({ queryKey: ["plan"], exact: false });
+        qc.removeQueries({ queryKey: ["plan"], exact: false });
+        return;
+      }
 
-    const tasksTodayKey = ["tasks", "today", planDateStr] as const;
-    const planTodayKey = ["plan", "today", planDateStr] as const;
+      // ✅ 4) IMPORTANT: compute plan date key in IST (same as DailyPlan)
+      const planDateStr = dayjs(deletedTask.dueDate)
+        .utcOffset(IST_OFFSET_MINUTES)
+        .format("YYYY-MM-DD");
 
-    // 3) Immediately hide plan UI for that day
-    qc.setQueryData(planTodayKey, null);
+      const tasksTodayKey = ["tasks", "today", planDateStr] as const;
+      const planTodayKey = ["plan", "today", planDateStr] as const;
 
-    // 4) Force DailyPlan queries to refetch next time
-    await Promise.all([
-      qc.invalidateQueries({ queryKey: tasksTodayKey }),
-      qc.invalidateQueries({ queryKey: planTodayKey }),
-    ]);
-  },
-});
+      // ✅ 5) Immediately hide plan UI for that day (no flicker)
+      qc.setQueryData(planTodayKey, null);
+
+      // ✅ 6) Ensure plan cache is gone + refetch will happen next time
+      qc.removeQueries({ queryKey: planTodayKey, exact: true });
+      qc.invalidateQueries({ queryKey: tasksTodayKey, exact: true });
+      qc.invalidateQueries({ queryKey: planTodayKey, exact: true });
+    },
+  });
+
+
+//// ✅ Delete Task  (FIX: return void, use "variables" for deletedId)
+// const deleteMutation = useMutation({
+//   mutationFn: async (id: number) => {
+//     await api.delete(`/tasks/${id}`);
+//     // ✅ DO NOT return id
+//   },
+
+//   // onSuccess(data, variables) => variables is the id you passed
+//   onSuccess: async (_data, deletedId) => {
+//     // 1) Invalidate the global list (your context list)
+//     qc.invalidateQueries({ queryKey: ["tasks"], exact: false });
+
+//     // 2) Find deleted task's dueDate from cached list (so we know which day plan belongs to)
+//     const cachedTasks = (qc.getQueryData<Task[]>(["tasks"]) ?? tasks) || [];
+//     const deletedTask = cachedTasks.find((t) => t.id === deletedId);
+
+//     // If we can't find it, fall back to invalidating all plan caches
+//     if (!deletedTask?.dueDate) {
+//       qc.invalidateQueries({ queryKey: ["plan"], exact: false });
+//       return;
+//     }
+
+//     const planDateStr = dayjs(deletedTask.dueDate)
+//       .startOf("day")
+//       .format("YYYY-MM-DD");
+
+//     const tasksTodayKey = ["tasks", "today", planDateStr] as const;
+//     const planTodayKey = ["plan", "today", planDateStr] as const;
+
+//     // 3) Immediately hide plan UI for that day
+//     qc.setQueryData(planTodayKey, null);
+
+//     // 4) Force DailyPlan queries to refetch next time
+//     await Promise.all([
+//       qc.invalidateQueries({ queryKey: tasksTodayKey }),
+//       qc.invalidateQueries({ queryKey: planTodayKey }),
+//     ]);
+//   },
+// });
 
   // ✅ Get single task (from cache or fetch if missing)
   const getTaskById = async (id: number): Promise<Task | null> => {
